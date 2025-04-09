@@ -37,18 +37,17 @@ RUN npm install --only=production
 
 RUN sed -i 's#electron js/electron.js#electron --no-sandbox js/electron.js#' package.json
 
+RUN pip install --upgrade pip
+RUN pip install wheel
 
 # Install additional Python dependencies for your project
-RUN pip install numpy pandas tqdm gdown opencv-python-headless
-RUN pip install flask deepface
-RUN pip install tf-keras
-RUN pip install tflite-runtime
 RUN pip install paho-mqtt
 RUN apt install -y libgl1  
 RUN apt install -y libglib2.0-0
 
 # Copy your custom modules (make sure to change the paths if needed)
 COPY ./MMM-FaceDetect-MQTT /app/MagicMirror/modules/MMM-FaceDetect-MQTT
+
 
 # Install Node MQTT module for custom module
 RUN cd /app/MagicMirror/modules/MMM-FaceDetect-MQTT && npm install mqtt

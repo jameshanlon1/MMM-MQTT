@@ -1,0 +1,5 @@
+docker build -t magicmirror-app .
+
+docker run -d --name magicmirror-debug -p 8080:8080 magicmirror-app
+
+docker logs magicmirror-debug
