@@ -39,6 +39,7 @@ RUN sed -i 's#electron js/electron.js#electron --no-sandbox js/electron.js#' pac
 
 RUN pip install --upgrade pip
 RUN pip install wheel
+RUN npm install node-fetch
 
 # Install additional Python dependencies for your project
 RUN pip install paho-mqtt
@@ -47,6 +48,7 @@ RUN apt install -y libglib2.0-0
 
 # Copy your custom modules (make sure to change the paths if needed)
 COPY ./MMM-FaceDetect-MQTT /app/MagicMirror/modules/MMM-FaceDetect-MQTT
+COPY ./MMM-JamesScores /app/MagicMirror/modules/MMM-JamesScores
 
 
 # Install Node MQTT module for custom module

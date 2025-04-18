@@ -7,8 +7,7 @@ Module.register("MMM-FaceDetect-MQTT", {
         // Add user calendar mappings
         userCalendars: {
             "Default": "https://www.calendarlabs.com/templates/ical/US-Holidays.ics",
-            "James": "https://calendar.google.com/calendar/ical/adidassport2016%40gmail.com/public/basic.ics",
-            "Sarah": "https://calendar.google.com/calendar/ical/3d27b8330b0b947cced8b0f9bb3f00884173e68140451e49ac4b037da682bf19%40group.calendar.google.com/public/basic.ics"
+            "James": "https://calendar.google.com/calendar/ical/adidassport2016%40gmail.com/public/basic.ics"
             // Add more users and their calendar URLs as needed
         },
         defaultUser: "Default"
@@ -53,10 +52,12 @@ Module.register("MMM-FaceDetect-MQTT", {
             wrapper.innerHTML = `<strong>${this.config.header}:</strong> ${this.value.user}`;
             // Update the calendar when a user is verified
             this.updateCalendarForUser(this.value.user);
+            this.updateModulesForUser(this.value.user);
         } else {    
             wrapper.innerHTML = `<strong>Unable to Verify: ${this.value.user}</strong>`;
             // Show default calendar if verification fails
             this.updateCalendarForUser(this.config.defaultUser);
+            this.updateModulesForUser(this.value.user);
         }
         return wrapper;
     },
@@ -113,6 +114,37 @@ Module.register("MMM-FaceDetect-MQTT", {
         });
     
         console.log(`Calendar updated for user: ${username}`);
+    },
+
+
+
+    updateModulesForUser: function(username) {
+        const allModules = MM.getModules();
+    
+        // Hide everything tagged as "james-only" unless James is verified
+        allModules.enumerate(function(module) {
+            if (module.data.classes && module.data.classes.includes("james-only")) {
+                if (username === "James") {
+                    module.show(1000);
+                } else {
+                    module.hide(1000);
+                }
+            }
+        });
+    
+        // Similarly, hide "default-only" modules if James is active
+        allModules.enumerate(function(module) {
+            if (module.data.classes && module.data.classes.includes("default-only")) {
+                if (username !== "James") {
+                    module.show(1000);
+                } else {
+                    module.hide(1000);
+                }
+            }
+        });
+    
+        console.log("Modules updated for user:", username);
     }
+    
     
 });
