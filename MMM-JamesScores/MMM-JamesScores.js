@@ -1,7 +1,7 @@
 Module.register("MMM-JamesScores", {
     defaults: {
         apiUrl: "https://api.sportmonks.com/v3/football/livescores/inplay?include=participants;scores;venue;periods;events;league",
-        apiToken: "Wn5Lyy9UBdQxDKfCcMj3nOY676L0WObpp5nJR6uS6rDgL3QCc5f78yzAEgB7",  // Set in config.js
+        apiToken: API_TOKEN_SCORES,  // Set in config.js
         updateInterval: 5 * 60 * 1000  // Every 5 minutes
     },
 

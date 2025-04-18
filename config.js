@@ -21,7 +21,7 @@ var config = {
             module: "MMM-JamesScores",
             position: "bottom_left",
             config: {
-                apiToken: "Wn5Lyy9UBdQxDKfCcMj3nOY676L0WObpp5nJR6uS6rDgL3QCc5f78yzAEgB7"
+                apiToken: API_TOKEN_SCORES
             },
             classes: "james-only" // Only show for James!
         },        
