@@ -49,7 +49,7 @@ RUN apt install -y libglib2.0-0
 # Copy your custom modules (make sure to change the paths if needed)
 COPY ./MMM-FaceDetect-MQTT /app/MagicMirror/modules/MMM-FaceDetect-MQTT
 COPY ./MMM-JamesScores /app/MagicMirror/modules/MMM-JamesScores
-
+COPY ./MMM-ProfileSwitcher /app/MagicMirror/modules/MMM-ProfileSwitcher
 
 # Install Node MQTT module for custom module
 RUN cd /app/MagicMirror/modules/MMM-FaceDetect-MQTT && npm install mqtt
