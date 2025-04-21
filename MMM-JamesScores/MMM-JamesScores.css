@@ -1,0 +1,72 @@
+.scores-wrapper {
+    text-align: left;
+    padding: 10px;
+    max-width: 500px;
+}
+
+.team-header {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.section-header {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    margin-top: 20px;
+    border-bottom: 1px solid #666;
+    padding-bottom: 5px;
+}
+
+.scores-list {
+    margin-bottom: 20px;
+}
+
+.score-item {
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-gap: 10px;
+    align-items: center;
+}
+
+.score {
+    font-weight: bold;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.match-info {
+    font-size: 0.8em;
+    color: #aaa;
+    grid-column: 1 / span 3;
+    text-align: center;
+    margin-top: 3px;
+}
+
+.home-team {
+    text-align: right;
+}
+
+.away-team {
+    text-align: left;
+}
+
+.our-team {
+    font-weight: bold;
+    color: #ffcc00; /* Highlight color for our team */
+}
+
+.live-match {
+    background-color: rgba(0, 255, 0, 0.1); /* Slight green tint for live matches */
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.no-matches {
+    font-style: italic;
+    color: #888;
+    margin-bottom: 15px;
+}

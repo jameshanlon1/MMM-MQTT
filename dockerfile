@@ -56,6 +56,7 @@ RUN cd /app/MagicMirror/modules/MMM-FaceDetect-MQTT && npm install mqtt
 
 # Copy your config file (assuming your config file is called config.js)
 COPY ./config.js /app/MagicMirror/config/config.js
+COPY ./.env /app/MagicMirror
 
 # Expose the port MagicMirror will run on
 EXPOSE 8080

@@ -1,12 +1,12 @@
 // MMM-FaceDetect-MQTT Module
 Module.register("MMM-FaceDetect-MQTT", {
     defaults: {
-        mqttBroker: "mqtt://test.mosquitto.org",
+        mqttBroker: "mqtt://mqtt.eclipseprojects.io",
         mqttTopic: "jamesh/face/verification",
         header: "User Detected",
         // Add user calendar mappings
         userCalendars: {
-            "Default": "https://www.calendarlabs.com/templates/ical/US-Holidays.ics",
+            "Default": "https://www.officeholidays.com/ics-all/ireland",
             "James": "https://calendar.google.com/calendar/ical/adidassport2016%40gmail.com/public/basic.ics"
             // Add more users and their calendar URLs as needed
         },
@@ -28,9 +28,11 @@ Module.register("MMM-FaceDetect-MQTT", {
         this.sendSocketNotification('CONFIG', this.config);
 
         // Hide all calendars initially on startup
-        MM.getModules().withClass("calendar").enumerate(function(module) {
-            module.hide(0);  // 0ms to hide all calendars instantly
-    });
+        var self = this;
+        setTimeout(function() {
+            self.updateCalendarForUser(self.config.defaultUser);
+            self.updateModulesForUser(self.config.defaultUser);
+        }, 1000);
     },
 
     getDom: function () {
@@ -80,28 +82,26 @@ Module.register("MMM-FaceDetect-MQTT", {
         }
     },
 
-     // New method to update calendar based on verified user
-     updateCalendarForUser: function(username) {
-        if (this.currentUser === username) {
-            return; // No change needed if same user
+    updateCalendarForUser: function(username) {
+        if (this.currentUser === username && this.loaded) {
+            return; // No change needed if same user and already loaded
         }
-    
+        
         this.currentUser = username;
-    
+        
         // Get the user's calendar URL or use default if not found
         let calendarUrl = this.config.userCalendars[username];
         if (!calendarUrl) {
-            // Use the default calendar if no user calendar is found
             calendarUrl = this.config.userCalendars[this.config.defaultUser];
             console.log(`No calendar found for ${username}, using default`);
         }
-    
+        
         // Hide all calendar modules first
         MM.getModules().withClass("calendar").enumerate(function(module) {
-            module.hide(1000);
+            module.hide(username === "Default" ? 0 : 1000); // Hide immediately on startup
         });
-    
-        // Show the calendar for the current user or default calendar
+        
+        // Show the calendar for the current user
         MM.getModules().withClass("calendar").enumerate(function(module) {
             const config = module.config;
             
@@ -109,40 +109,41 @@ Module.register("MMM-FaceDetect-MQTT", {
             const hasMatchingCalendar = config.calendars && config.calendars.some(cal => cal.url === calendarUrl);
             
             if (hasMatchingCalendar) {
-                module.show(1000); // Show matching calendar
+                module.show(1000);
             }
         });
-    
+        
         console.log(`Calendar updated for user: ${username}`);
+        this.loaded = true;
     },
 
 
 
     updateModulesForUser: function(username) {
         const allModules = MM.getModules();
-    
-        // Hide everything tagged as "james-only" unless James is verified
+        
+        // Handle "james-only" modules
         allModules.enumerate(function(module) {
             if (module.data.classes && module.data.classes.includes("james-only")) {
                 if (username === "James") {
                     module.show(1000);
                 } else {
-                    module.hide(1000);
+                    module.hide(0); // Hide immediately on startup
                 }
             }
         });
-    
-        // Similarly, hide "default-only" modules if James is active
+        
+        // Handle "default-only" modules
         allModules.enumerate(function(module) {
             if (module.data.classes && module.data.classes.includes("default-only")) {
                 if (username !== "James") {
                     module.show(1000);
                 } else {
-                    module.hide(1000);
+                    module.hide(0); // Hide immediately on startup
                 }
             }
         });
-    
+        
         console.log("Modules updated for user:", username);
     }
     
