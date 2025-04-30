@@ -14,7 +14,8 @@ var config = {
                 // Map detected users to ProfileSwitcher profiles
                 userProfiles: {
                     "Default": "default",
-                    "James": "james"
+                    "James": "james",
+                    "Solo": "solo"
                 }
             },
             classes: "default everyone"
